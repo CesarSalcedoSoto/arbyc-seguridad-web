@@ -1,0 +1,224 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/*
+  ════════════════════════════════════════════════════════════════════════════
+  VARIABLES DE DISEÑO — Arbyc Seguridad
+  Tokens extraídos del kit Elementor #7 (post-7.css) del sitio real.
+  ════════════════════════════════════════════════════════════════════════════
+
+  --color-accent    : #0D1635  → botones CTA, fondo header mobile, FAB menú
+  --color-primary   : #6EC1E4  → hover links, underline nav, acentos visuales
+  --color-secondary : #54595F  → texto secundario
+  --color-text      : #7A7A7A  → texto de cuerpo
+  --color-gold      : #FFE600  → badges, highlights, hover mobile nav
+  --color-bronze    : #9D6B30  → decorativo
+  --color-whatsapp  : #25D366  → FAB flotante derecho
+  --color-header-bg : rgba(0,0,0,0.58) ≈ #00000094
+
+  Tipografía (--e-global-typography-*):
+  --font-primary  : "Roboto" weight 600  → headings
+  --font-text     : "Roboto" weight 400  → cuerpo y nav
+  --font-accent   : "Roboto" weight 500  → botones
+  --font-secondary: "Roboto Slab" weight 400 → subtítulos
+
+  Contenedor: max-width 1140px
+  ════════════════════════════════════════════════════════════════════════════
+*/
+
+@layer base {
+  :root {
+    /* ── Paleta ── */
+    --color-accent:     #0D1635;
+    --color-primary:    #6EC1E4;
+    --color-secondary:  #54595F;
+    --color-text:       #7A7A7A;
+    --color-gold:       #FFE600;
+    --color-bronze:     #9D6B30;
+    --color-whatsapp:   #25D366;
+    --color-header-bg:  rgba(0, 0, 0, 0.58); /* #00000094 */
+
+    /* ── Tipografía ── */
+    --font-sans:   "Roboto", system-ui, sans-serif;
+    --font-slab:   "Roboto Slab", Georgia, serif;
+    --fw-text:     400;
+    --fw-accent:   500;
+    --fw-heading:  600;
+
+    /* ── Espaciado base (widget-spacing del kit) ── */
+    --space-widget: 20px;
+
+    /* ── Contenedor ── */
+    --max-w-container: 1140px;
+
+    /* ── Header ── */
+    --h-header-desktop: 80px;
+    --h-header-mobile:  64px;
+
+    /* ── Transiciones ── */
+    --transition-fast:    150ms ease;
+    --transition-default: 200ms ease;
+    --transition-slow:    300ms ease;
+
+    /* ── Radios ── */
+    --radius-btn:      4px;
+    --radius-dropdown: 6px;
+    --radius-fab:      50%;
+
+    /* ── Sombras ── */
+    --shadow-header:   0 2px 8px rgba(0, 0, 0, 0.35);
+    --shadow-dropdown: 0 8px 24px rgba(13, 22, 53, 0.18);
+    --shadow-fab:      0 4px 12px rgba(0, 0, 0, 0.30);
+    --shadow-fab-hover:0 6px 18px rgba(0, 0, 0, 0.40);
+  }
+
+  /* ── Reset base ── */
+  html {
+    @apply scroll-smooth;
+    scroll-padding-top: var(--h-header-desktop);
+    font-family: var(--font-sans);
+    color: var(--color-text);
+  }
+  @media (max-width: 1023px) {
+    html {
+      scroll-padding-top: var(--h-header-mobile);
+    }
+  }
+
+  body {
+    @apply antialiased;
+    margin: 0;
+    padding: 0;
+    background-color: #fff;
+    overscroll-behavior: contain; /* igual al kit del sitio */
+  }
+
+  /* ── Foco visible global (WCAG 2.1 AA) ── */
+  :focus-visible {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 2px;
+  }
+
+  /* ── Headings — Roboto 600 ── */
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-sans);
+    font-weight: var(--fw-heading);
+    color: #111;
+  }
+
+  /* ── Links base ── */
+  a {
+    text-decoration: none;
+    color: inherit;
+  }
+}
+
+/* ══════════════════════════════════════════════════════════════════════════════
+   COMPONENTES UTILITARIOS
+   ══════════════════════════════════════════════════════════════════════════════ */
+@layer components {
+
+  /* Contenedor centrado con max-width del sitio */
+  .container-site {
+    width: 100%;
+    max-width: var(--max-w-container);
+    margin-inline: auto;
+    padding-inline: 1rem;
+  }
+  @screen sm { .container-site { padding-inline: 1.5rem; } }
+
+  /* Botón CTA principal — usa tokens del acento */
+  .btn-cta {
+    @apply inline-block px-5 py-2.5;
+    background-color: var(--color-accent);
+    color: #fff;
+    font-family: var(--font-sans);
+    font-weight: var(--fw-accent);
+    font-size: 14px;
+    border-radius: var(--radius-btn);
+    transition: background-color var(--transition-default);
+    white-space: nowrap;
+    line-height: 1;
+  }
+  .btn-cta:hover  { background-color: #162050; }
+  .btn-cta:active { background-color: #060c20; }
+  .btn-cta:focus-visible {
+    outline: 2px solid #fff;
+    outline-offset: 2px;
+  }
+
+  /* FABs flotantes (menú y WhatsApp) */
+  .fab {
+    position: fixed;
+    bottom: 20px;
+    z-index: 9999;
+    width: 60px;
+    height: 60px;
+    border-radius: var(--radius-fab);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: var(--shadow-fab);
+    cursor: pointer;
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+  }
+  .fab:hover {
+    transform: scale(1.1);
+    box-shadow: var(--shadow-fab-hover);
+  }
+  .fab-menu      { left: 20px;  background-color: var(--color-accent);    }
+  .fab-whatsapp  { right: 20px; background-color: var(--color-whatsapp);  }
+}
+
+/* ══════════════════════════════════════════════════════════════════════════════
+   UTILIDADES EXTRA
+   ══════════════════════════════════════════════════════════════════════════════ */
+@layer utilities {
+  /* Underline animado (pointer underline + animation fade — igual al sitio) */
+  .nav-underline {
+    position: relative;
+  }
+  .nav-underline::after {
+    content: "";
+    position: absolute;
+    bottom: -3px;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background-color: var(--color-primary);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform var(--transition-default);
+  }
+  .nav-underline:hover::after,
+  .nav-underline:focus-visible::after,
+  .nav-underline[aria-current="page"]::after {
+    transform: scaleX(1);
+  }
+
+  /* Scroll reveal: fade + slide lateral (Intersection Observer añade .is-visible) */
+  .reveal {
+    opacity: 0;
+    transform: translate3d(-2.25rem, 0, 0);
+    transition:
+      opacity 0.75s cubic-bezier(0.22, 1, 0.36, 1),
+      transform 0.75s cubic-bezier(0.22, 1, 0.36, 1);
+    transition-delay: var(--reveal-delay, 0ms);
+  }
+  .reveal[data-reveal="right"] {
+    transform: translate3d(2.25rem, 0, 0);
+  }
+  .reveal.is-visible {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .reveal {
+      opacity: 1;
+      transform: none;
+      transition: none;
+    }
+  }
+}
