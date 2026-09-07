@@ -8,6 +8,7 @@
     "server": "node server/index.js",
     "start": "node server/index.js",
     "build": "vite build",
+    "deploy": "node scripts/deploy.mjs",
     "preview": "vite preview",
     "optimize:images": "node scripts/optimize-images.mjs"
   },

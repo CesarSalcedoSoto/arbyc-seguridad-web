@@ -5,6 +5,7 @@ node_modules/
 dist/
 dist-ssr/
 build/
+arbyc-web-deploy.zip
 
 # ─── Variables de entorno (NO subir secretos) ───────────────────────────────
 .env

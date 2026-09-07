@@ -133,7 +133,9 @@ export default function ContactSection() {
     setFeedback("");
 
     try {
-      const res = await fetch("/api/contact", {
+      // HostGator (hosting compartido) no ejecuta Node, así que el envío
+      // se delega a un endpoint PHP del propio hosting: public/contact.php.
+      const res = await fetch("/contact.php", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ nombre, email, telefono, mensaje }),

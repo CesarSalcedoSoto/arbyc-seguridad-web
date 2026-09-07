@@ -1,0 +1,52 @@
+# ─── Arbyc Seguridad — .htaccess para HostGator (Apache) ────────────────────
+# Se sube junto con el contenido de dist/ dentro de public_html/.
+
+Options -Indexes
+
+# ── Compresión (reducción de peso transferido) ──
+<IfModule mod_deflate.c>
+  AddOutputFilterByType DEFLATE text/html text/plain text/css text/javascript
+  AddOutputFilterByType DEFLATE application/javascript application/json application/xml
+  AddOutputFilterByType DEFLATE image/svg+xml
+</IfModule>
+
+# ── Cache del navegador ──
+<IfModule mod_expires.c>
+  ExpiresActive On
+  ExpiresByType image/webp               "access plus 1 year"
+  ExpiresByType image/jpeg               "access plus 1 year"
+  ExpiresByType image/png                "access plus 1 year"
+  ExpiresByType image/svg+xml            "access plus 1 month"
+  ExpiresByType text/css                 "access plus 1 month"
+  ExpiresByType application/javascript   "access plus 1 month"
+  ExpiresByType application/json         "access plus 1 month"
+  ExpiresByType font/woff2               "access plus 1 year"
+</IfModule>
+
+# ── Cabeceras de seguridad ──
+<IfModule mod_headers.c>
+  Header set X-Content-Type-Options "nosniff"
+  Header set X-Frame-Options "SAMEORIGIN"
+  Header set Referrer-Policy "strict-origin-when-cross-origin"
+  Header set Permissions-Policy "geolocation=(), microphone=(), camera=()"
+</IfModule>
+
+# ── SPA fallback ──
+# La web es una SPA (React): cualquier ruta no existente (p. ej. /admin)
+# debe servir index.html para que el enrutado funcione.
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteBase /
+  # No reescribir archivos ni directorios reales (incluye contact.php)
+  RewriteCond %{REQUEST_FILENAME} !-f
+  RewriteCond %{REQUEST_FILENAME} !-d
+  RewriteRule ^ index.html [L]
+</IfModule>
+
+# ── Forzar HTTPS ──
+# Descomenta este bloque DESPUÉS de activar el SSL en cPanel (AutoSSL/Let's Encrypt).
+# <IfModule mod_rewrite.c>
+#   RewriteEngine On
+#   RewriteCond %{HTTPS} off
+#   RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+# </IfModule>
